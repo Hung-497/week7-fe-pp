@@ -24,6 +24,14 @@ const ProductPage = () => {
     }
   };
 
+  const deletingProduct = async () => {
+    const pop_up = window.confirm(
+        "The deletion is final, proceed?"
+    );
+    if (pop_up) {
+        await deleteProduct();
+        navigate("/home")};
+    }
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -58,6 +66,7 @@ const ProductPage = () => {
         <p>Supplier contact phone: {product.supplier.contactPhone}</p>
         <p>Supplier verified: {product.supplier.isVerified ? "Yes" : "No"}</p>
         <button onClick={() => navigate("/")}>Back</button>
+        <button onClick={deletingProduct}>Delete</button>
       </div>
     )
   );
