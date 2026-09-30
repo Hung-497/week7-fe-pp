@@ -54,7 +54,7 @@ const deleteProduct = async (req, res) => {
     const {id} = req.params;
     
     if (!mongoose.Types.ObjectId.isValid(id)) {
-        res.status(400).json({message: "Invalid id"}) //might be 500
+        return res.status(400).json({message: "Invalid id"}) //might be 500
     }
     try {
         const deleteProduct =  await Product.findByIdAndDelete(id);
@@ -75,11 +75,11 @@ const getProductById = async (req, res) => {
     const {id} = req.params;
     
     if (!mongoose.Types.ObjectId.isValid(id)) {
-        res.status(400).json({message: "Invalid id"}) //might be 500
+        return res.status(400).json({message: "Invalid id"}) //might be 500
     }
     try {
         const product =  await Product.findById(id);
-        if (!product) {
+        if (product) {
             res.status(200).send(product); 
         } else {
             res.status(404).json({message: "Not found"})
