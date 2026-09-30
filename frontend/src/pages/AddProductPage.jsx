@@ -9,7 +9,7 @@ const addProductPage = () => {
     const [description, setDescription] = useState("");
     const [price, setPrice] = useState("");
     const [inventoryCount, setInventoryCount] = useState("");
-    const [supplier, setSupplier] = useState("");
+    
     const [supplierName, setSupplierName] = useState("");
     const [contactEmail, setContactEmail] = useState("");
     const [contactPhone, setContactPhone] = useState("");
@@ -21,7 +21,7 @@ const addProductPage = () => {
 
 const addProduct = async (newProduct) => {
     try {
-        const res = await fetch("/api/jobs", {
+        const res = await fetch("/api/products", {
             method: "POST",
             headers: { "Content-Type": "application/json", },
             body: JSON.stringify(newProduct)
