@@ -133,7 +133,7 @@ const addProductPage = ({isAuthenticated}) => {
 
           <div className="box5">
             <label htmlFor="inventoryCount" className="inventoryCount">
-              P
+              Inventory Count
             </label>
             <input
               type="text"
