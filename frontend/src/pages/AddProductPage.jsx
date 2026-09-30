@@ -9,33 +9,33 @@ const addProductPage = () => {
     const [description, setDescription] = useState("");
     const [price, setPrice] = useState("");
     const [inventoryCount, setInventoryCount] = useState("");
-    
+
     const [supplierName, setSupplierName] = useState("");
     const [contactEmail, setContactEmail] = useState("");
     const [contactPhone, setContactPhone] = useState("");
     const [isVerified, setIsVerified] = useState("")
 
     const navigate = useNavigate();
-}
 
 
-const addProduct = async (newProduct) => {
-    try {
-        const res = await fetch("/api/products", {
-            method: "POST",
-            headers: { "Content-Type": "application/json", },
-            body: JSON.stringify(newProduct)
-        });
 
-        if (!res.ok) {
-            throw new Error("Failed to add a product");
+    const addProduct = async (newProduct) => {
+        try {
+            const res = await fetch("/api/products", {
+                method: "POST",
+                headers: { "Content-Type": "application/json", },
+                body: JSON.stringify(newProduct)
+            });
+
+            if (!res.ok) {
+                throw new Error("Failed to add a product");
+            }
+        } catch (error) {
+            toast.error("An error happened while adding product");
+            return false;
         }
-    } catch (error) {
-        toast.error("An error happened while adding product");
-        return false;
-    }
-    return true;
-
+        return true;
+    };
 
 
 

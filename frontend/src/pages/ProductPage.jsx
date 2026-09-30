@@ -29,8 +29,8 @@ const ProductPage = () => {
         "The deletion is final, proceed?"
     );
     if (pop_up) {
-        await deleteProduct();
-        navigate("/home")};
+        await deleteProduct(id);
+        navigate("/")};
     }
 
   useEffect(() => {
