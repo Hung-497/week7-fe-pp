@@ -37,6 +37,7 @@ const ProductPage = () => {
     try {
       const res = await fetch(`/api/products/${id}`, {
         method: "PUT",
+        headers: { "Content-Type": "application/json", },
         body: JSON.stringify(product),
       });
       if (!res.ok) throw new Error("Failed to update product");
