@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const ProductPage = () => {
   const { id } = useParams();
@@ -7,6 +8,22 @@ const ProductPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+
+
+  const deleteProduct = async (id) => {
+    try {
+        const res = await fetch(`/api/products/${id}`, {
+            method: "DELETE",
+        });
+        if (!res.ok){
+            throw new Error("Failed to delete product")
+        }
+    } catch (error) {
+        console.error("Problem deleting the product")
+        toast.error("Problem deleting the product")
+    }
+  };
+
 
   useEffect(() => {
     const fetchProduct = async () => {
