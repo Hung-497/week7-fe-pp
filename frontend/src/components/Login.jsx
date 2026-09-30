@@ -8,13 +8,14 @@ const Login = ({ setIsAuthenticated }) => {
 
     const handleLogin = async () => {
         try {
-            const res = await fetch("/api/user/login", {
+            const res = await fetch("/api/users/login", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" }
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({email,password})
             });
 
             if (res.ok) {
-                const user = await response.json();
+                const user = await res.json();
                 localStorage.setItem("user", JSON.stringify(user));
                 console.log("User logged in successfully!");
                 setIsAuthenticated(true);
