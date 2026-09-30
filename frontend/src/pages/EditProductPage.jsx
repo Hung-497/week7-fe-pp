@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-const ProductPage = () => {
+const ProductPage = ({ isAuthenticated }) => {
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -14,6 +14,9 @@ const ProductPage = () => {
   const [contactEmail, setContactEmail] = useState("");
   const [contactPhone, setContactPhone] = useState("");
   const [isVerified, setIsVerified] = useState("true");
+
+  const user = JSON.parse(localStorage.getItem("user"));
+  const token = user ? user.token : null;
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -37,7 +40,10 @@ const ProductPage = () => {
     try {
       const res = await fetch(`/api/products/${id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json", },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify(product),
       });
       if (!res.ok) throw new Error("Failed to update product");

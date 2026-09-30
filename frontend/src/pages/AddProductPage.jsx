@@ -15,13 +15,19 @@ const addProductPage = () => {
   const [contactPhone, setContactPhone] = useState("");
   const [isVerified, setIsVerified] = useState("");
 
+  const user = JSON.parse(localStorage.getItem("user"));
+  const token = user ? user.token : null;
+
   const navigate = useNavigate();
 
   const addProduct = async (newProduct) => {
     try {
       const res = await fetch("/api/products", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify(newProduct),
       });
 
