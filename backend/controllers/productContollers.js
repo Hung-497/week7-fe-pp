@@ -13,9 +13,9 @@ const createProduct = async (req, res) => {
 };
 
 const updateProductById = async (req,res) => {
-    const { productId } = req.params;
+    const { id } = req.params;
 
-    if (!mongoose.Types.ObjectId.isValid(productId)) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(400).json({message: "Invalid product Id"})
     }
 
@@ -23,7 +23,7 @@ const updateProductById = async (req,res) => {
 
     try {
         const updatedProduct = await Product.findOneAndUpdate(
-            { _id: productId},
+            id,
             {productName, category, description, price, inventoryCount, supplier},
             {new:true},
         );
@@ -49,15 +49,15 @@ const getAllProducts = async (req, res) => {
 }
 
 
-//delete  (:productId)
+//delete  (:id)
 const deleteProduct = async (req, res) => {
-    const {productId} = req.params;
+    const {id} = req.params;
     
-    if (!mongoose.Types.ObjectId.isValid(ProductId)) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
         res.status(400).json({message: "Invalid id"}) //might be 500
     }
     try {
-        const deleteProduct =  await Product.findByIdAndDelete({_id: productId});
+        const deleteProduct =  await Product.findByIdAndDelete(id);
         if (deleteProduct) {
             res.status(204).send(); //send empty
         } else {
@@ -70,17 +70,17 @@ const deleteProduct = async (req, res) => {
 
 
 
-//getById  (:productId)
+//getById  (:id)
 const getProductById = async (req, res) => {
-    const {productId} = req.params;
+    const {id} = req.params;
     
-    if (!mongoose.Types.ObjectId.isValid(productId)) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
         res.status(400).json({message: "Invalid id"}) //might be 500
     }
     try {
-        const product =  await Product.findById({_id: productId});
-        if (product) {
-            res.status(204).send(product); 
+        const product =  await Product.findById(id);
+        if (!product) {
+            res.status(200).send(product); 
         } else {
             res.status(404).json({message: "Not found"})
         }

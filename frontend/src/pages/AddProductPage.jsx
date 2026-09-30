@@ -58,7 +58,7 @@ const addProductPage = () => {
 
         addProduct(newProduct);
         toast.success("Product has been added");
-        return navigate("/products");
+        return navigate("/");
     };
 
     return (
