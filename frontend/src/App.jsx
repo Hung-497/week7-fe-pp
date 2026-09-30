@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/HomePage";
 import AddProductPage from "./pages/AddProductPage";
 import Navbar from "./components/Navbar";
-import NotFoundPage from "./pages/NotFoundPage";
+//import NotFoundPage from "./pages/NotFoundPage";
 import ProductPage from "./pages/ProductPage"
 import EditProductPage from "./pages/EditProductPage"
 
@@ -18,7 +18,7 @@ const App = () => {
             <Route path="/add-product" element={<AddProductPage />} />
             <Route path="/products/:id" element={<ProductPage />} />
             <Route path="/edit/:id" element={<EditProductPage />} />
-            <Route path="*" element={<NotFoundPage />} />
+          
           </Routes>
         </div>
       </BrowserRouter>
@@ -26,4 +26,6 @@ const App = () => {
   );
 };
 
+
+//  <Route path="*" element={<NotFoundPage />} />
 export default App;
