@@ -7,13 +7,10 @@ const {
     getProductById,
     deleteProduct
 } = require("../controllers/productContollers")
-const requireAuth = require("../middleware/requireAuth")
 
 router.get("/", getAllProducts);
 
 router.get("/:id", getProductById);
-
-router.use(requireAuth)
 
 router.post("/", createProduct);
 

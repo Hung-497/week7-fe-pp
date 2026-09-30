@@ -1,52 +1,59 @@
 const mongoose = require("mongoose");
 
-const Schema = mongoose.Schema
+const Schema = mongoose.Schema;
 
 const supplierSchema = new Schema({
-    name: {
-        type: String,
-        require: true,
-    },
-    contactEmail: {
-        type: String,
-        require: true,
-    },
-    contactPhone: {
-        type: String,
-        require: true,
-        match: /^\d{10,}$/,
-    },
-    isVerified: {
-        type: Boolean,
-        require: true,
-    },
-})
+  name: {
+    type: String,
+    required: true,
+  },
+  contactEmail: {
+    type: String,
+    required: true,
+  },
+  contactPhone: {
+    type: String,
+    required: true,
+  },
+  isVerified: {
+    type: Boolean,
+    required: true,
+  },
+});
 
-const productSchema = new Schema({
+const productSchema = new Schema(
+  {
+    user_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "User",
+    },
     productName: {
-        type: String,
-        require: true,
+      type: String,
+      required: true,
     },
     category: {
-        type: String,
-        require: true,
+      type: String,
+      required: true,
     },
     description: {
-        type: String,
-        require: true,
+      type: String,
+      required: true,
     },
     price: {
-        type: Number,
-        require: true,
+      type: Number,
+      required: true,
     },
     inventoryCount: {
-        type: Number,
-        require: true,
+      type: Number,
+      required: true,
     },
     supplier: {
-        type: supplierSchema,
-        require: true,
+      type: supplierSchema,
+      required: true,
     },
-})
+  },
+  { timestamps: true },
+);
 
-module.exports = mongoose.model("Product", productSchema)
+module.exports = mongoose.model("Product", productSchema);
