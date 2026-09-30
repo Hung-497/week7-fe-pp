@@ -6,6 +6,8 @@ import Navbar from "./components/Navbar";
 //import NotFoundPage from "./pages/NotFoundPage";
 import ProductPage from "./pages/ProductPage";
 import EditProductPage from "./pages/EditProductPage";
+import Login from "./components/Login";
+import Signup from "./components/Signup";
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
@@ -43,6 +45,14 @@ const App = () => {
                 )
               }
             />
+            <Route
+              path="/login"
+              element={<Login setIsAuthenticated={setIsAuthenticated}/>}
+            ></Route>
+            <Route
+              path="/signup"
+              element={<Login setIsAuthenticated={setIsAuthenticated}/>}
+            ></Route>
           </Routes>
         </div>
       </BrowserRouter>
