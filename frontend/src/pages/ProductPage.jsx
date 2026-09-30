@@ -67,6 +67,7 @@ const ProductPage = () => {
         <p>Supplier verified: {product.supplier.isVerified ? "Yes" : "No"}</p>
         <button onClick={() => navigate("/")}>Back</button>
         <button onClick={deletingProduct}>Delete</button>
+        <button onClick={() => navigate(`/edit/${product._id}`)}>Edit</button>
       </div>
     )
   );
