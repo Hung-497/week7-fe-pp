@@ -5,7 +5,6 @@ const Signup = ({ setIsAuthenticated }) => {
     const [fullName, setFullName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [password, setPassword] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [gender, setGender] = useState("");
     const [date_of_birth, setDateOfBirth] = useState("");
