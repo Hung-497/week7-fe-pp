@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-
+import { useState } from "react";
 import Home from "./pages/HomePage";
 import AddProductPage from "./pages/AddProductPage";
 import Navbar from "./components/Navbar";
@@ -51,7 +51,7 @@ const App = () => {
             ></Route>
             <Route
               path="/signup"
-              element={<Login setIsAuthenticated={setIsAuthenticated}/>}
+              element={<Signup setIsAuthenticated={setIsAuthenticated}/>}
             ></Route>
           </Routes>
         </div>
