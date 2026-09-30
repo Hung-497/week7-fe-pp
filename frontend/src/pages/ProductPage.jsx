@@ -71,8 +71,15 @@ const ProductPage = ({isAuthenticated}) => {
         <p>Supplier contact phone: {product.supplier.contactPhone}</p>
         <p>Supplier verified: {product.supplier.isVerified ? "Yes" : "No"}</p>
         <button onClick={() => navigate("/")}>Back</button>
-        <button onClick={deletingProduct}>Delete</button>
-        <button onClick={() => navigate(`/edit/${product._id}`)}>Edit</button>
+
+        {isAuthenticated && (
+          <>
+            <button onClick={deletingProduct}>Delete</button>
+            <button onClick={() => navigate(`/edit/${product._id}`)}>
+              Edit
+            </button>
+          </>
+        )}
       </div>
     )
   );
