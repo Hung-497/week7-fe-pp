@@ -33,7 +33,7 @@ const ProductPage = () => {
     fetchProduct();
   }, [id]);
 
-  const updateProduct = async (book) => {
+  const updateProduct = async (product) => {
     try {
       const res = await fetch(`/api/products/${id}`, {
         method: "PUT",
