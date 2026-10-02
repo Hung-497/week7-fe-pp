@@ -1,33 +1,21 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import useField from "../hooks/useField";
+import useLogin from "../hooks/useLogin";
 
 const Login = ({ setIsAuthenticated }) => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [error, setError] = useState(null);
+    const email = useField("email");
+    const password = useField("password");
+    const { login, error } = useLogin("/api/users/login");
     const navigate = useNavigate();
 
     const handleLogin = async () => {
-        setError(null);
-        try {
-            const res = await fetch("/api/users/login", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({email,password})
-            });
+        const user = await login({ email: email.value, password: password.value });
 
-            if (res.ok) {
-                const user = await res.json();
-                localStorage.setItem("user", JSON.stringify(user));
-                console.log("User logged in successfully!");
-                setIsAuthenticated(true);
-                navigate("/");
-            } else {
-                const data = await res.json().catch(() => ({}));
-                setError(data.error || data.message || "Login failed");
-            }
-        } catch (error) {
-            setError(error.message || "Unable to log in. Please try again.");
+        if (user) {
+            localStorage.setItem("user", JSON.stringify(user));
+            console.log("User logged in successfully!");
+            setIsAuthenticated(true);
+            navigate("/");
         }
     };
 
@@ -38,18 +26,14 @@ const Login = ({ setIsAuthenticated }) => {
             <label>
                 Email:
                 <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    {...email}
                     placeholder="Enter your email"
                 />
             </label>
             <label>
                 Password:
                 <input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    {...password}
                     placeholder="Enter your password"
                 />
             </label>
@@ -61,5 +45,4 @@ const Login = ({ setIsAuthenticated }) => {
 
 
 export default Login;
-
 

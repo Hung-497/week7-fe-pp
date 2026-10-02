@@ -1,41 +1,35 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import useField from "../hooks/useField";
+import useSignup from "../hooks/useSignup";
 
 const Signup = ({ setIsAuthenticated }) => {
-    const [fullName, setFullName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [phoneNumber, setPhoneNumber] = useState("");
-    const [gender, setGender] = useState("");
-    const [date_of_birth, setDateOfBirth] = useState("");
-    const [accountType, setAccountType] = useState("");
-    const [error, setError] = useState(null);
+    const fullName = useField("text");
+    const email = useField("email");
+    const password = useField("password");
+    const phoneNumber = useField("text");
+    const gender = useField("text");
+    const date_of_birth = useField("text");
+    const accountType = useField("text");
+    const { signup, error } = useSignup("/api/users/signup");
     const navigate = useNavigate();
 
     const handleSignup = async () => {
-        setError(null);
-        try {
-            const response = await fetch("/api/users/signup", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ fullName, email, password, phoneNumber, gender, date_of_birth, accountType }),
-            });
+        const user = await signup({
+            fullName: fullName.value,
+            email: email.value,
+            password: password.value,
+            phoneNumber: phoneNumber.value,
+            gender: gender.value,
+            date_of_birth: date_of_birth.value,
+            accountType: accountType.value,
+        });
 
-            if (response.ok) {
-                const user = await response.json();
-                localStorage.setItem("user", JSON.stringify(user));
-                console.log("User signed up successfully!");
-                setIsAuthenticated(true);
-                navigate("/");
-            } else {
-                const data = await response.json().catch(() => ({}));
-                setError(data.error || data.message || "Signup failed");
-            }
-        } catch (error) {
-            setError(error.message || "Unable to sign up. Please try again.");
-        };
+        if (user) {
+            localStorage.setItem("user", JSON.stringify(user));
+            console.log("User signed up successfully!");
+            setIsAuthenticated(true);
+            navigate("/");
+        }
     };
     return (
         <div>
@@ -44,9 +38,7 @@ const Signup = ({ setIsAuthenticated }) => {
             <label>
                 Full Name:
                 <input
-                    type="fullName"
-                    value={fullName}
-                    onChange={(e) => setFullName(e.target.value)}
+                    {...fullName}
                     placeholder="Full Name"
                 ></input>
             </label>
@@ -54,9 +46,7 @@ const Signup = ({ setIsAuthenticated }) => {
             <label>
                 Email:
                 <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    {...email}
                     placeholder="email"
                 ></input>
             </label>
@@ -64,9 +54,7 @@ const Signup = ({ setIsAuthenticated }) => {
             <label>
                 Password:
                 <input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    {...password}
                     placeholder="Password"
                 ></input>
             </label>
@@ -74,9 +62,7 @@ const Signup = ({ setIsAuthenticated }) => {
             <label>
                 Phone:
                 <input
-                    type="phoneNumber"
-                    value={phoneNumber}
-                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    {...phoneNumber}
                     placeholder="392.."
                 ></input>
             </label>
@@ -84,9 +70,7 @@ const Signup = ({ setIsAuthenticated }) => {
             <label>
                 Gender:
                 <input
-                    type="gender"
-                    value={gender}
-                    onChange={(e) => setGender(e.target.value)}
+                    {...gender}
                     placeholder="Gender"
                 ></input>
             </label>
@@ -94,9 +78,7 @@ const Signup = ({ setIsAuthenticated }) => {
             <label>
                 DBO:
                 <input
-                    type="date_of_birth"
-                    value={date_of_birth}
-                    onChange={(e) => setDateOfBirth(e.target.value)}
+                    {...date_of_birth}
                     placeholder="12.12.1222"
                 ></input>
             </label>
@@ -104,9 +86,7 @@ const Signup = ({ setIsAuthenticated }) => {
             <label>
                  account type:
                 <input
-                    type="accountType"
-                    value={accountType}
-                    onChange={(e) => setAccountType(e.target.value)}
+                    {...accountType}
                     placeholder="  "
                 ></input>
             </label>
