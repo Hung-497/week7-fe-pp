@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Login = ({ setIsAuthenticated }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState(null);
     const navigate = useNavigate();
 
     const handleLogin = async () => {
+        setError(null);
         try {
             const res = await fetch("/api/users/login", {
                 method: "POST",
@@ -21,16 +23,18 @@ const Login = ({ setIsAuthenticated }) => {
                 setIsAuthenticated(true);
                 navigate("/");
             } else {
-                console.error("Login failed");
+                const data = await res.json().catch(() => ({}));
+                setError(data.error || data.message || "Login failed");
             }
         } catch (error) {
-            console.error("Error during login:", error);
+            setError(error.message || "Unable to log in. Please try again.");
         }
     };
 
     return (
         <div className="form-container">
             <h2>Login</h2>
+            {error && <p role="alert">{error}</p>}
             <label>
                 Email:
                 <input
@@ -57,6 +61,5 @@ const Login = ({ setIsAuthenticated }) => {
 
 
 export default Login;
-
 
 

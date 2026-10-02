@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { generatePath, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Signup = ({ setIsAuthenticated }) => {
     const [fullName, setFullName] = useState("");
@@ -9,9 +9,11 @@ const Signup = ({ setIsAuthenticated }) => {
     const [gender, setGender] = useState("");
     const [date_of_birth, setDateOfBirth] = useState("");
     const [accountType, setAccountType] = useState("");
+    const [error, setError] = useState(null);
     const navigate = useNavigate();
 
     const handleSignup = async () => {
+        setError(null);
         try {
             const response = await fetch("/api/users/signup", {
                 method: "POST",
@@ -28,15 +30,17 @@ const Signup = ({ setIsAuthenticated }) => {
                 setIsAuthenticated(true);
                 navigate("/");
             } else {
-                console.error("Signup failed");
+                const data = await response.json().catch(() => ({}));
+                setError(data.error || data.message || "Signup failed");
             }
         } catch (error) {
-            console.error("Error during signup:", error);
+            setError(error.message || "Unable to sign up. Please try again.");
         };
     };
     return (
         <div>
             <h2>Sign Up</h2>
+            {error && <p role="alert">{error}</p>}
             <label>
                 Full Name:
                 <input

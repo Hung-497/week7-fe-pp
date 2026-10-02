@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-const ProductPage = ({ isAuthenticated }) => {
+const ProductPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 

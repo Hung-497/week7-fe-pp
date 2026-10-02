@@ -17,24 +17,24 @@ const updateProductById = async (req,res) => {
     const { id } = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(400).json({message: "Invalid product Id"})
+        return res.status(404).json({message: "Invalid product Id"})
     }
 
     const { productName, category, description, price, inventoryCount, supplier } = req.body;
 
     try {
-        const updatedProduct = await Product.findByIdAndUpdate(
-            id,
+        const updatedProduct = await Product.findOneAndUpdate(
+            { _id: id},
             {productName, category, description, price, inventoryCount, supplier},
             {new:true},
         );
 
         if (!updatedProduct) {
-            res.status(404).json({message:" 404 Not Found "})
+            return res.status(404).json({message:" 404 Not Found "})
         } 
         res.status(200).json(updatedProduct)
     } catch (error) {
-        res.status(500).message({message: error.message})
+        res.status(500).json({message: error.message})
     }
 };
 
@@ -50,15 +50,15 @@ const getAllProducts = async (req, res) => {
 }
 
 
-//delete  (:productId)
+//delete  (:id)
 const deleteProduct = async (req, res) => {
     const {id} = req.params;
     
     if (!mongoose.Types.ObjectId.isValid(id)) {
-        res.status(400).json({message: "Invalid id"}) //might be 500
+        return res.status(404).json({message: "Invalid id"}) //might be 500
     }
     try {
-        const deleteProduct =  await Product.findByIdAndDelete(id);
+        const deleteProduct =  await Product.findByIdAndDelete({_id: id});
         if (deleteProduct) {
             res.status(204).send(); //send empty
         } else {
@@ -71,17 +71,17 @@ const deleteProduct = async (req, res) => {
 
 
 
-//getById  (:productId)
+//getById  (:id)
 const getProductById = async (req, res) => {
     const {id} = req.params;
     
     if (!mongoose.Types.ObjectId.isValid(id)) {
-        res.status(400).json({message: "Invalid id"}) //might be 500
+        return res.status(404).json({message: "Invalid id"}) //might be 500
     }
     try {
-        const product =  await Product.findById(id);
+        const product =  await Product.findById({_id: id});
         if (product) {
-            res.status(200).send(product); 
+            res.status(200).json(product); 
         } else {
             res.status(404).json({message: "Not found"})
         }

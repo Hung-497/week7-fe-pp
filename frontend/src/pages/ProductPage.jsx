@@ -2,7 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-const ProductPage = ({isAuthenticated}) => {
+const ProductPage = ({ isAuthenticated }) => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -14,29 +14,31 @@ const ProductPage = ({isAuthenticated}) => {
 
   const deleteProduct = async (id) => {
     try {
-        const res = await fetch(`/api/products/${id}`, {
-            method: "DELETE",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            }
-        });
-        if (!res.ok){
-            throw new Error("Failed to delete product")
-        }
+      const res = await fetch(`/api/products/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!res.ok) {
+        throw new Error("Failed to delete product");
+      }
+      return true;
     } catch (error) {
-        console.error("Problem deleting the product")
-        toast.error("Problem deleting the product")
+      toast.error(error.message || "Problem deleting the product");
+      return false;
     }
   };
 
   const deletingProduct = async () => {
-    const pop_up = window.confirm(
-        "The deletion is final, proceed?"
-    );
+    const pop_up = window.confirm("The deletion is final, proceed?");
     if (pop_up) {
-        await deleteProduct(id);
-        navigate("/")};
+      const result = await deleteProduct(id);
+      if (result) {
+        navigate("/");
+      }
     }
+  };
 
   useEffect(() => {
     const fetchProduct = async () => {

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-const addProductPage = ({isAuthenticated}) => {
+const AddProductPage = () => {
   const [productName, setProductName] = useState("");
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
@@ -13,7 +13,8 @@ const addProductPage = ({isAuthenticated}) => {
   const [supplierName, setSupplierName] = useState("");
   const [contactEmail, setContactEmail] = useState("");
   const [contactPhone, setContactPhone] = useState("");
-  const [isVerified, setIsVerified] = useState("");
+  const [isVerified, setIsVerified] = useState(false);
+  const [error, setError] = useState(null);
 
   const user = JSON.parse(localStorage.getItem("user"));
   const token = user ? user.token : null;
@@ -35,14 +36,16 @@ const addProductPage = ({isAuthenticated}) => {
         throw new Error("Failed to add a product");
       }
     } catch (error) {
+      setError(error.message);
       toast.error("An error happened while adding product");
       return false;
     }
     return true;
   };
 
-  const submitForm = (e) => {
+  const submitForm = async (e) => {
     e.preventDefault();
+    setError(null);
 
     const newProduct = {
       productName,
@@ -58,9 +61,13 @@ const addProductPage = ({isAuthenticated}) => {
       },
     };
 
-    addProduct(newProduct);
-    toast.success("Product has been added");
-    return navigate("/");
+    const result = await addProduct(newProduct);
+    if (result) {
+      toast.success("Product has been added");
+      navigate("/");
+    } else {
+      toast.error("An error happened while adding product");
+    }
   };
 
   return (
@@ -68,7 +75,7 @@ const addProductPage = ({isAuthenticated}) => {
       <div className="box2">
         <form onSubmit={submitForm}>
           <h2 className="addProduct">Add new product</h2>
-
+          {error && <p role="alert">{error}</p>}
           <div className="box3">
             <label htmlFor="productName" className="productName">
               Product Name
@@ -216,4 +223,4 @@ const addProductPage = ({isAuthenticated}) => {
   );
 };
 
-export default addProductPage;
+export default AddProductPage;
